@@ -3,11 +3,11 @@
 
 #include "rgb_control.h"
 
-static const CRGBA CLOCK_COLOR_HOUR       = CRGBA(255, 0, 0, 255);
-static const CRGBA CLOCK_COLOR_MINUTE     = CRGBA(255, 0, 0, 255);
-static const CRGBA CLOCK_COLOR_BACKGROUND = CRGBA(64, 16, 0x00, 255);
-static const CRGBA CLOCK_COLOR_SECOND     = CRGBA(64, 32, 16, 255);
-static const CRGBA CLOCK_COLOR_SECOND_DIM = CRGBA(64, 16, 16, 255);
+static const CRGBA CLOCK_COLOR_HOUR       = CRGBA(32, 0, 0, 255);
+static const CRGBA CLOCK_COLOR_MINUTE     = CRGBA(32, 4, 0, 255);
+static const CRGBA CLOCK_COLOR_BACKGROUND = CRGBA(16, 4, 0x00, 255);
+static const CRGBA CLOCK_COLOR_SECOND     = CRGBA(16, 4, 4, 255);
+static const CRGBA CLOCK_COLOR_SECOND_DIM = CRGBA(16, 4, 4, 255);
 
 void clock_led_set_color(int hour, CRGBA color);
 void clock_set_time(int hour, int minute, int second);

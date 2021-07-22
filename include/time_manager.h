@@ -4,7 +4,7 @@
 #include "esp_err.h"
 #include <time.h>
 
-#define EORZEAN_TIME_CONSTANT (3600.0f / 117.0f)
+#define EORZEAN_TIME_CONSTANT (3600.0f / 175.0f)
 
 typedef long gmt_offset_t;
 typedef long dst_offset_t;

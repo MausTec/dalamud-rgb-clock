@@ -1,9 +1,17 @@
 #include "rgb_control.h"
 #include "driver/rmt.h"
+#include "led_strip.h"
 
 static const char *TAG = "rgb_control";
 static bool _initialized = false;
 static CRGBA leds[NUM_LEDS];
+
+static led_strip_t strip = {
+    .type = LED_STRIP_WS2812,
+    .length = NUM_LEDS,
+    .gpio = LED_DOUT,
+    .buf = NULL,
+};
 
 void rgb_fill(CRGBA color) {
     for (int i = 0; i < NUM_LEDS; i++) {
@@ -12,13 +20,9 @@ void rgb_fill(CRGBA color) {
 }
 
 esp_err_t rgb_init() {
-    rmt_config_t config = RMT_DEFAULT_CONFIG_TX(LED_DOUT, RMT_CHANNEL_0);
-    config.clk_div = 2;
+    led_strip_install();
 
-    auto err = rmt_config(&config);
-    if (ESP_OK != err) return err;
-
-    err = rmt_driver_install(config.channel, 0, 0);
+    auto err = led_strip_init(&strip);
     if (ESP_OK != err) return err;
 
     rgb_fill({0, 0, 0, 255});
@@ -28,11 +32,12 @@ esp_err_t rgb_init() {
 }
 
 void rgb_show() {
-    
+    led_strip_flush(&strip);
 }
 
 void rgb_set_color(int n, CRGBA color) {
-    leds[n] = color;
+    rgb_t rgb = { color.red, color.green, color.blue };
+    led_strip_set_pixel(&strip, n, rgb);
 }
 
 void rgb_set_color_range(int start, int end, CRGBA color) {

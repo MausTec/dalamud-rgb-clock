@@ -20,13 +20,13 @@ extern "C" void app_main(void) {
   ESP_ERROR_CHECK(time_manager_init());
 
   static long _clk_update_ms = 0;
-  static long _local = false;
+  static long _local = true;
 
   while (true) {
     console_tick();
     long millis = esp_timer_get_time() / 1000L;
 
-    if (millis - _clk_update_ms > 1000) {
+    if (millis - _clk_update_ms > 300) {
       _clk_update_ms = millis;
 
       struct tm timeinfo;
