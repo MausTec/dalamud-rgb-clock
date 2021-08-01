@@ -2,17 +2,42 @@
 #define __clock_led_h
 
 #include "rgb_control.h"
+#include "color.h"
 
-static const CRGBA CLOCK_COLOR_HOUR       = CRGBA(32, 0, 0, 255);
-static const CRGBA CLOCK_COLOR_MINUTE     = CRGBA(32, 4, 0, 255);
-static const CRGBA CLOCK_COLOR_BACKGROUND = CRGBA(16, 4, 0x00, 255);
-static const CRGBA CLOCK_COLOR_SECOND     = CRGBA(16, 4, 4, 255);
-static const CRGBA CLOCK_COLOR_SECOND_DIM = CRGBA(16, 4, 4, 255);
+#ifdef __cplusplus
+extern "C" {
+#endif
 
-void clock_led_set_color(int hour, CRGBA color);
+struct clock_effect {
+    color_t hour_inner;
+    color_t hour_mid;
+    color_t hour_outer;
+
+    color_t minute_inner;
+    color_t minute_mid;
+    color_t minute_outer;
+
+    color_t second_inner;
+    color_t second_mid;
+    color_t second_outer;
+};
+
+typedef struct clock_effect clock_effect_t;
+
+#define SIMPLE_CLOCK_EFFECT(hour, minute, second) { \
+    hour, hour, hour, \
+    minute, minute, minute, \
+    second, second, second, \
+}
+
+void clock_led_set_color(int hour, color_t color);
 void clock_set_time(int hour, int minute, int second);
-void clock_led_set_split_color(int hour, CRGBA inner_left_color, CRGBA inner_right_color, CRGBA outer_left_color, CRGBA outer_right_color);
-void clock_led_set_io_color(int hour, CRGBA inner_color, CRGBA outer_color);
-void clock_led_set_lr_color(int hour, CRGBA left_color, CRGBA right_color);
+void clock_led_set_split_color(int hour, color_t inner_left_color, color_t inner_right_color, color_t mid_left_color, color_t mid_right_color, color_t outer_left_color, color_t outer_right_color);
+void clock_led_set_io_color(int hour, color_t inner_color, color_t outer_color);
+void clock_led_set_lr_color(int hour, color_t left_color, color_t right_color);
+
+#ifdef __cplusplus
+};
+#endif
 
 #endif

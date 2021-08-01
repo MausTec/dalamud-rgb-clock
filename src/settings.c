@@ -7,7 +7,7 @@
 static const char *TAG = "settings";
 static bool _initialized = false;
 
-static settings_t _current_settings;
+static settings_t _current_settings = DEFAULT_SETTINGS;
 
 bool _is_nvs_err(esp_err_t err, nvs_handle nvs) {
     if (err != ESP_OK && err != ESP_ERR_NVS_NOT_FOUND) {

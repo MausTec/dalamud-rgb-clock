@@ -5,9 +5,7 @@
 #include "esp_sntp.h"
 #include "esp_log.h"
 
-extern "C" {
-    #include <time64.h>
-}
+#include <time64.h>
 
 #include "lwip/err.h"
 #include "lwip/sys.h"
@@ -156,7 +154,7 @@ esp_err_t time_manager_set_time(struct tm time) {
     return ESP_FAIL;
 }
 
-esp_err_t time_manager_set_zone(gmt_offset_t offset, dst_offset_t dst_offset_s, bool is_dst) {
+esp_err_t time_manager_set_zone(gmt_offset_t offset, dst_offset_t dst_offset_s, uint8_t is_dst) {
     dst_offset_t daylight = is_dst ? dst_offset_s : 0;
 
     char cst[17] = {0};
@@ -189,7 +187,7 @@ esp_err_t time_manager_get_local_time(struct tm* timeinfo) {
     time_t now;
     time(&now);
     localtime_r(&now, timeinfo);
-    ESP_LOGE(TAG, "local_time: %ld", now);
+    ESP_LOGD(TAG, "local_time: %ld", now);
     return ESP_OK;
 }
 
@@ -201,16 +199,12 @@ esp_err_t time_manager_get_eorzea_time(struct tm* timeinfo) {
     gettimeofday(&tv, NULL);
 
     // Calculate Eorzean Time
-    double then = (double)now * (double)EORZEAN_TIME_CONSTANT;
-    then += ((double)tv.tv_usec * (double)EORZEAN_TIME_CONSTANT) / 1000000L;
+    const int64_t EORZEA_TIME_CONSTANT_US = 2057142857;
+    int64_t then_us = ((int64_t) now) * EORZEA_TIME_CONSTANT_US;
+    Time64_T then_time = then_us / 100000000;
 
-    // For some reason, Eorzea time is 7 minutes behind, which probably has to do with our
-    // bad time64 implementation. Here, let's try fixing that:
-    then += 7 * 60;
-
-    Time64_T then_time = floor(then);
     gmtime64_r(&then_time, timeinfo);
     
-    ESP_LOGE(TAG, "local_time: %ld, eorzean_time: %llf (%lld)", now, then, then_time);
+    ESP_LOGI(TAG, "local_time: %ld, eorzean_time: %lld", now, then_time);
     return ESP_OK;
 }
