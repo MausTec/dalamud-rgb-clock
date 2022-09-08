@@ -1,6 +1,12 @@
-[submodule "components/esp-idf-lib"]
+[submodule "vendor/esp-idf-lib"]
 	path = vendor/esp-idf-lib
 	url = https://github.com/UncleRus/esp-idf-lib.git
+[submodule "lib/y2038"]
+	path = lib/y2038
+	url = https://github.com/evalEmpire/y2038
 [submodule "vendor/y2038"]
 	path = vendor/y2038
 	url = https://github.com/evalEmpire/y2038
+[submodule "components/esp-usbc-pd"]
+	path = components/esp-usbc-pd
+	url = https://github.com/MausTec/esp-usbc-pd
