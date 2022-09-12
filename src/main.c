@@ -9,6 +9,9 @@
 #include "rgb_control.h"
 #include "settings.h"
 #include "time_manager.h"
+#include "usb_control.h"
+
+#include "fusb302.h"
 
 static const char* TAG = "main";
 
@@ -37,6 +40,21 @@ rgb_bg_effect_t bgfx = {
 };
 
 void app_main(void) {
+    fusb302_config_t fusb_config = {
+        .int_gpio = I2C_INT_GPIO,
+        .i2c_port = I2C_NUM_0
+    };
+
+    usb_control_init();
+    ESP_ERROR_CHECK(fusb302_init(&fusb_config));
+    esp_err_t err = fusb302_request_pd(12000, 3000);
+
+    if (err != ESP_OK) {
+        ESP_LOGW(TAG, "Couldn't request PD!");
+    } else {
+        ESP_LOGI(TAG, "USB PD request successful.");
+    }
+
     ESP_ERROR_CHECK(console_init());
     ESP_ERROR_CHECK(settings_init());
     ESP_ERROR_CHECK(time_manager_init());
