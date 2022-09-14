@@ -47,12 +47,16 @@ void app_main(void) {
 
     usb_control_init();
     ESP_ERROR_CHECK(fusb302_init(&fusb_config));
-    esp_err_t err = fusb302_request_pd(12000, 3000);
+    // esp_err_t err = fusb302_request_pd(12000, 3000);
 
-    if (err != ESP_OK) {
-        ESP_LOGW(TAG, "Couldn't request PD!");
-    } else {
-        ESP_LOGI(TAG, "USB PD request successful.");
+    // if (err != ESP_OK) {
+    //     ESP_LOGW(TAG, "Couldn't request PD!");
+    // } else {
+    //     ESP_LOGI(TAG, "USB PD request successful.");
+    // }
+
+    while(true) {
+        vTaskDelay(1);
     }
 
     ESP_ERROR_CHECK(console_init());

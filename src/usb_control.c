@@ -2,7 +2,6 @@
 #include "pinout.h"
 #include "driver/i2c.h"
 #include "esp_err.h"
-#include "tcpm.h"
 
 static const char *TAG = "usb_control";
 
@@ -61,25 +60,4 @@ void usb_control_init(void) {
         }
         printf("\r\n");
     }
-}
-
-void fusb302_register_read(uint8_t reg_addr, uint8_t *data, size_t len) {
-    esp_err_t err = i2c_master_write_read_device(I2C_MASTER_NUM, FUSB302_I2C_ADDR, &reg_addr, 1, data, len, I2C_MASTER_TIMEOUT_MS / portTICK_PERIOD_MS);
-    ESP_ERROR_CHECK_WITHOUT_ABORT(err);
-}
-
-void fusb302_register_read_byte(uint8_t reg_addr, uint8_t *data) {
-    esp_err_t err = i2c_master_write_read_device(I2C_MASTER_NUM, FUSB302_I2C_ADDR, &reg_addr, 1, data, 1, I2C_MASTER_TIMEOUT_MS / portTICK_PERIOD_MS);
-    ESP_ERROR_CHECK_WITHOUT_ABORT(err);
-}
-
-void fusb302_register_write_byte(uint8_t reg_addr, uint8_t data) {
-    int ret;
-    uint8_t write_buf[2] = {reg_addr, data};
-    ret = i2c_master_write_to_device(I2C_MASTER_NUM, FUSB302_I2C_ADDR, write_buf, sizeof(write_buf), I2C_MASTER_TIMEOUT_MS / portTICK_PERIOD_MS);
-    ESP_ERROR_CHECK_WITHOUT_ABORT(ret);
-}
-
-void usb_enable_power_delivery(void) {
-
 }
